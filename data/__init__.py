@@ -41,7 +41,7 @@ class _Dataset:
     xs, ys = _load_preprocessed()
 
     def __iter__(self):
-        return (x, y for x, y in zip(self.xs, self.ys))
+        return ((x, y) for x, y in zip(self.xs, self.ys))
 
     def __len__(self):
         len(self.xs)
