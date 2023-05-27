@@ -21,10 +21,13 @@ This is part of Hong-Ik University 'Advanced ML' Lecture project.
 ---
 
 - `preprocess.py`
-  - preprocessing module
+  - preprocessing script
 
-- `network.py`
-  - network definition
+[//]: # (- `network.py`)
 
-- `train.py`
-  - training process
+[//]: # (  - network definition)
+
+[//]: # ()
+[//]: # (- `train.py`)
+
+[//]: # (  - training process)
