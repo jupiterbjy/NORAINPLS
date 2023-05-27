@@ -45,7 +45,6 @@ def _load_csv(parent_dir: pathlib.Path):
     return xs, ys
 
 
-# create singleton
 class _Dataset:
     def __init__(self, parent_dir: pathlib.Path):
         xs_per_yr, ys_per_yr = _load_csv(parent_dir)
@@ -57,7 +56,7 @@ class _Dataset:
         return ((x, y) for x, y in zip(self.xs, self.ys))
 
     def __len__(self):
-        len(self.xs)
+        return len(self.xs)
 
     def __getitem__(self, idx):
         return self.xs[idx], self.ys[idx]
