@@ -3,10 +3,9 @@ Preprocessing code
 """
 
 import pathlib
-from os import PathLike
 
 import pandas as pd
-import numpy as np
+
 
 BLACKLIST_COLUMNS = 0, 1, 2, 4, 6, 8, 10, 12, 14, 18
 ALLOWED_COLUMNS = list(set(range(19)) - set(BLACKLIST_COLUMNS))
@@ -21,7 +20,7 @@ X_PATH.mkdir(exist_ok=True)
 Y_PATH.mkdir(exist_ok=True)
 
 
-def preprocess_raw_gen(csv_path):
+def _preprocess_raw_gen(csv_path):
     """Loads single csv file, and yields dataframe chunks.
     Each chunk is one continuous sections, thus each are
     split from sensor anomaly positions."""
@@ -41,7 +40,7 @@ def preprocess_raw_gen(csv_path):
     return x, y
 
 
-def preprocess_all():
+def _preprocess_all():
     """Find all csv files and preprocess"""
 
     for file in RAW_DATA_PATH.iterdir():
@@ -49,10 +48,10 @@ def preprocess_all():
             continue
 
         # preprocess, then save without header & index
-        x, y = preprocess_raw_gen(file)
+        x, y = _preprocess_raw_gen(file)
         x.to_csv(X_PATH / file.name, header=False, index=False)
         y.to_csv(Y_PATH / file.name, header=False, index=False)
 
 
 if __name__ == '__main__':
-    preprocess_all()
+    _preprocess_all()
