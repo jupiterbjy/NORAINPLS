@@ -45,12 +45,19 @@ def _load_csv(parent_dir: pathlib.Path):
     return xs, ys
 
 
+def normalize(data):
+    """Zero-center & Normalize"""
+
+    data -= np.mean(data, axis=0)
+    return data / np.std(data, axis=0)
+
+
 class _Dataset:
     def __init__(self, parent_dir: pathlib.Path, divide_factor=0.2):
 
         xs_per_yr, ys_per_yr = _load_csv(parent_dir)
 
-        self.xs = np.concatenate(xs_per_yr)
+        self.xs = normalize(np.concatenate(xs_per_yr))
         self.ys = np.concatenate(ys_per_yr)
 
         # change Y to 0-1
@@ -75,3 +82,4 @@ class _Dataset:
 
 training_set = _Dataset(TRAIN_DATA_PATH)
 generality_set = _Dataset(GENERALITY_DATA_PATH)
+
