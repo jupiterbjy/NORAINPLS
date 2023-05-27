@@ -46,11 +46,22 @@ def _load_csv(parent_dir: pathlib.Path):
 
 
 class _Dataset:
-    def __init__(self, parent_dir: pathlib.Path):
+    def __init__(self, parent_dir: pathlib.Path, divide_factor=0.2):
+
         xs_per_yr, ys_per_yr = _load_csv(parent_dir)
 
         self.xs = np.concatenate(xs_per_yr)
         self.ys = np.concatenate(ys_per_yr)
+
+        # change Y to 0-1
+        self.ys = np.array([1.0 if rain != 0.0 else 0.0 for rain in self.ys])
+
+        self.div = int((1 - divide_factor) * len(self))
+
+    def separate_data(self):
+        """Divide into training_x, training_y, test_x, test_y"""
+
+        return self.xs[:self.div], self.ys[:self.div], self.xs[self.div:], self.ys[self.div:]
 
     def __iter__(self):
         return ((x, y) for x, y in zip(self.xs, self.ys))
