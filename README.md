@@ -8,26 +8,18 @@ This is part of Hong-Ik University 'Advanced ML' Lecture project.
 - _data_ : Training data
   - _raw_
     - raw data from [KMA](https://data.kma.go.kr/data/grnd/selectAsosRltmList.do)
-  - _preprocessed_
-    - Preprocessed raw data w/o sensor anomaly data, split into parts from where sensor anomaly was. Naming sequence is as following:
-      `{year}_chunk{chunk_num}` - i.e. `2014_chunk0`, `2015_chunk0`, `2015_chunk1`
+  - _training_
+    - training data
+  - _generality_
+    - generality test data taken from different location from training data
 
 ---
 
-- _ipynb_ : Demonstration & Documentation purpose
+- _ipynb_
   - `train.ipynb`
-    - combination of below 3 scripts in jupyter notebook
+    - All required training data is cloned from this repo, no need to add data into session
 
 ---
 
 - `preprocess.py`
   - preprocessing script
-
-[//]: # (- `network.py`)
-
-[//]: # (  - network definition)
-
-[//]: # ()
-[//]: # (- `train.py`)
-
-[//]: # (  - training process)

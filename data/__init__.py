@@ -7,20 +7,24 @@ import numpy as np
 import pandas as pd
 
 
-_PREPROCESSED_DATA_PATH = pathlib.Path("data/preprocessed")
+_PREPROCESSED_DATA_PATH = pathlib.Path("data/training")
 
-# make sure x, y dir exists
-_X_PATH = (_PREPROCESSED_DATA_PATH / "x")
-_Y_PATH = (_PREPROCESSED_DATA_PATH / "y")
+ROOT = pathlib.Path(__file__).parent
+
+TRAIN_DATA_PATH = ROOT / "training"
+GENERALITY_DATA_PATH = ROOT / "generality"
 
 
-def _load_preprocessed():
-    """Load preprocessed data"""
+def _load_csv(parent_dir: pathlib.Path):
+    """Load training data"""
+
+    print(f"Loading {parent_dir.name} Dataset")
+
     # fetch path to order it
-    x_paths = list(_X_PATH.iterdir())
+    x_paths = list((parent_dir / "x").iterdir())
     x_paths.sort(key=lambda p: p.stem)
 
-    y_paths = [_Y_PATH / x_path.name for x_path in x_paths]
+    y_paths = [parent_dir / "y" / x_path.name for x_path in x_paths]
 
     xs = []
     ys = []
@@ -38,13 +42,16 @@ def _load_preprocessed():
         xs.append(np.array(pd.read_csv(x_file)))
         ys.append(np.array(pd.read_csv(y_file)))
 
-    print(f"Fetched {len(xs)} datasets")
     return xs, ys
 
 
 # create singleton
 class _Dataset:
-    xs, ys = _load_preprocessed()
+    def __init__(self, parent_dir: pathlib.Path):
+        xs_per_yr, ys_per_yr = _load_csv(parent_dir)
+
+        self.xs = np.concatenate(xs_per_yr)
+        self.ys = np.concatenate(ys_per_yr)
 
     def __iter__(self):
         return ((x, y) for x, y in zip(self.xs, self.ys))
@@ -56,4 +63,5 @@ class _Dataset:
         return self.xs[idx], self.ys[idx]
 
 
-dataset = _Dataset()
+training_set = _Dataset(TRAIN_DATA_PATH)
+generality_set = _Dataset(GENERALITY_DATA_PATH)
