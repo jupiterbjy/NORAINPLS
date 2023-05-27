@@ -16,11 +16,17 @@ _Y_PATH = (_PREPROCESSED_DATA_PATH / "y")
 
 def _load_preprocessed():
     """Load preprocessed data"""
+    # fetch path to order it
+    x_paths = list(_X_PATH.iterdir())
+    x_paths.sort(key=lambda p: p.stem)
+
+    y_paths = [_Y_PATH / x_path.name for x_path in x_paths]
+
     xs = []
     ys = []
 
     # for each year fetch data and insert into xs / ys
-    for x_file, y_file in zip(_X_PATH.iterdir(), _Y_PATH.iterdir()):
+    for x_file, y_file in zip(x_paths, y_paths):
 
         # just in case make sure both matches and is .csv
         if not (x_file.name == y_file.name and x_file.suffix == y_file.suffix == ".csv"):
